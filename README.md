@@ -4,9 +4,11 @@ Used Python 3.13
 
 `pip install -r requirements.txt`
 
+`playwright install`
+
 **Run tests in head mode:**
 
-`pytest tests/test_advanced_search.py --headed`
+`pytest --headed`
 
 **Run tests with generate Allure results:**
 

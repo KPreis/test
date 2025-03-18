@@ -1,0 +1,4 @@
+__pycache__
+qaseio.lock
+build
+.pytest_cache

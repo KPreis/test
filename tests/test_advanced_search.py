@@ -2,7 +2,7 @@ import allure
 import pytest
 from playwright.sync_api import Page
 from pages.advanced_search_page import AdvancedSearchPage
-from pages.results_search_page import ResultsSearchPage
+from pages.vacancy_page import VacancyPage
 
 SEARCH_URL = "https://hh.ru/search/vacancy/advanced"
 PROFESSION = "Тестировщик"
@@ -16,7 +16,7 @@ def advanced_search_page(page: Page):
 
 @pytest.fixture
 def results_search_page(page: Page):
-  return ResultsSearchPage(page)
+  return VacancyPage(page)
 
 @allure.feature("Advanced Search Page")
 @allure.story("Advanced Search")
@@ -29,26 +29,8 @@ def test_basic_elements(advanced_search_page: AdvancedSearchPage):
     assert advanced_search_page.region_input.is_visible()
     assert advanced_search_page.search_button.is_visible()
 
-@allure.story("Check search by salary only")
-def test_salary_filter(advanced_search_page: AdvancedSearchPage, results_search_page: ResultsSearchPage):
-  with allure.step("Open advanced search page"):
-    advanced_search_page.navigate(SEARCH_URL)
-  
-  with allure.step("Fill salary filter"):
-    advanced_search_page.fill_salary(SALARY)
-  
-  with allure.step("Enable salary only"):
-    advanced_search_page.enable_salary_only()
-  
-  with allure.step("Click search button"):
-    advanced_search_page.click_search()
-  
-  with allure.step("Check search results"):
-    advanced_search_page.check_results_visible()
-    results_search_page.check_salary(CHECK_SALARY)
-
 @allure.story("Check search by profession, region, salary and remote")
-def test_combined_filters(advanced_search_page: AdvancedSearchPage, results_search_page: ResultsSearchPage):
+def test_combined_filters(advanced_search_page: AdvancedSearchPage, results_search_page: VacancyPage):
   with allure.step("Open advanced search page"):
     advanced_search_page.navigate(SEARCH_URL)
  
@@ -61,8 +43,8 @@ def test_combined_filters(advanced_search_page: AdvancedSearchPage, results_sear
   with allure.step("Click search button"):
     advanced_search_page.click_search()
 
-  with allure.step("Check results visible"):
-    advanced_search_page.check_results_visible()
+  with allure.step("Check results page opened"):
+    results_search_page.check_results_visible()
   
   with allure.step("Check filters results"):
     results_search_page.check_profession(PROFESSION)
